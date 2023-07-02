@@ -1,0 +1,11 @@
+@import './normalize.scss';
+@import './variables/global.scss';
+@import './variables/palette.scss';
+
+* {
+    font: var(--font-m);
+}
+
+.root {
+    padding-top: 1rem;
+}
