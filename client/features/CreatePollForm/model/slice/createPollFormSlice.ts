@@ -13,6 +13,7 @@ const initialState: CreatePollFormSchema = {
     isPollCreated: false,
     isLoading: false,
     error: '',
+    data: {} as Poll,
 };
 
 export const {
