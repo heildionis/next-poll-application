@@ -4,7 +4,7 @@ import { HYDRATE } from 'next-redux-wrapper';
 export const rtkApi = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:3000/api',
+        baseUrl: `${process.env.NEXT_PUBLIC_ROOT_URL}/api`,
     }),
     // eslint-disable-next-line consistent-return
     extractRehydrationInfo: (action, { reducerPath }) => {
