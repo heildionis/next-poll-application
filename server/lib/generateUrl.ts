@@ -1,1 +1,3 @@
-export const generateUrl = () => Date.now().toString();
+import { v4 as uuidv4 } from 'uuid';
+
+export const generateUrl = () => uuidv4();
