@@ -1,6 +1,5 @@
 import { MantineProvider } from '@mantine/core';
 import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore';
-import { SessionProvider } from 'next-auth/react';
 import { ReactNode } from 'react';
 
 import { Layout } from './layout';
@@ -20,9 +19,7 @@ export const Providers = ({ children, store }: ProvidersProps) => (
         }}
     >
         <StoreProvider initialStore={store}>
-            <SessionProvider>
-                <Layout>{children}</Layout>
-            </SessionProvider>
+            <Layout>{children}</Layout>
         </StoreProvider>
     </MantineProvider>
 );

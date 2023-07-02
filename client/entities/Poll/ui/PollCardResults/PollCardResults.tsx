@@ -54,6 +54,10 @@ export const PollCardResults: FC<PollCardResultsProps> = memo((props) => {
 
         Object.entries(item?.choices).forEach(([choiceName, votes]) => {
             percentageRatio[choiceName] = (votes / totalVotes) * 100;
+
+            if (!percentageRatio[choiceName]) {
+                percentageRatio[choiceName] = 0;
+            }
         });
 
         return {
@@ -67,21 +71,23 @@ export const PollCardResults: FC<PollCardResultsProps> = memo((props) => {
             {renderHeading?.()}
             <Title>{item.title}</Title>
             <Stack spacing={16}>
-                {Object.entries(percentageRatio).map(([choiceName, ratio]) => (
-                    <Stack spacing={4}>
-                        <Group position='apart'>
-                            <Text>{choiceName}</Text>
-                            <Text>{ratio.toFixed(2)}%</Text>
-                        </Group>
-                        <Slider
-                            disabled
-                            styles={styles}
-                            min={0}
-                            max={100}
-                            value={ratio}
-                        />
-                    </Stack>
-                ))}
+                {Object.entries(percentageRatio).map(
+                    ([choiceName, ratio], index) => (
+                        <Stack key={index} spacing={4}>
+                            <Group position='apart'>
+                                <Text>{choiceName}</Text>
+                                <Text>{ratio.toFixed(2)}%</Text>
+                            </Group>
+                            <Slider
+                                disabled
+                                styles={styles}
+                                min={0}
+                                max={100}
+                                value={ratio}
+                            />
+                        </Stack>
+                    )
+                )}
             </Stack>
             <Divider my={16} />
             <Group position='apart'>
