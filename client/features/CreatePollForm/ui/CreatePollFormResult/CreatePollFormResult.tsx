@@ -12,6 +12,11 @@ import { useCreatePollFormActions } from '../../model/slice/createPollFormSlice'
 import { PollCopyButton } from '#/entities/Poll';
 import { getRoutePoll, getRouteRoot } from '#/shared/constants/route';
 
+/**
+ * Renders the result of creating a poll.
+ * The component displays the poll title, options to create another poll or go to the created poll,
+ * and a copy button to copy the shareable URL of the poll.
+ */
 export const CreatePollFormResult: FC = memo(() => {
     const title = useCreatePollFormTitle();
     const poll = useCreatePollFormData();

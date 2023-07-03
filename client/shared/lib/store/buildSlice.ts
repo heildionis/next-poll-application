@@ -7,6 +7,10 @@ import {
 import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
+/**
+ * Function that builds a Redux slice and provides a custom hook for accessing slice actions.
+ * It takes options for creating a slice as input and returns an object containing the slice and the custom hook.
+ */
 export const buildSlice = <
     State,
     CaseReducers extends SliceCaseReducers<State>,
@@ -14,8 +18,10 @@ export const buildSlice = <
 >(
     options: CreateSliceOptions<State, CaseReducers, Name>
 ) => {
+    // Create a slice using the provided options
     const slice = createSlice(options);
 
+    // Custom hook for accessing slice actions
     const useActions = (): typeof slice.actions => {
         const dispatch = useDispatch();
 

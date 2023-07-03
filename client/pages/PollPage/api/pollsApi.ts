@@ -15,15 +15,6 @@ const pollsApi = rtkApi.injectEndpoints({
             }),
             providesTags: ['Poll'],
         }),
-        checkIp: build.query<boolean, string>({
-            query: (shareableUrl) => ({
-                url: '/polls',
-                params: {
-                    url: shareableUrl,
-                },
-                method: 'PATCH',
-            }),
-        }),
         voteInPoll: build.mutation<Poll, VoteInPollArg>({
             query: ({ shareableUrl, choices }) => ({
                 url: `/vote`,
@@ -43,4 +34,3 @@ export const getFetchedPoll = pollsApi.endpoints.fetchPoll;
 
 export const voteInPollFromApi = pollsApi.endpoints.voteInPoll.initiate;
 export const { useFetchPollQuery, useVoteInPollMutation } = pollsApi;
-export const checkIpFromApi = pollsApi.endpoints.checkIp.initiate;

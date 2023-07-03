@@ -1,5 +1,4 @@
 import { AppProps } from 'next/app';
-import { Inter } from 'next/font/google';
 
 import { Providers } from '#/app';
 import { wrapper } from '#/app/providers/StoreProvider';
@@ -11,11 +10,6 @@ interface PageProps {
     };
 }
 
-const inter = Inter({
-    weight: ['400', '500', '700'],
-    subsets: ['cyrillic', 'latin'],
-});
-
 const App = ({
     Component,
     ...rest
@@ -24,9 +18,7 @@ const App = ({
 
     return (
         <Providers store={store}>
-            <div className={inter.className}>
-                <Component {...props.pageProps} />
-            </div>
+            <Component {...props.pageProps} />
         </Providers>
     );
 };

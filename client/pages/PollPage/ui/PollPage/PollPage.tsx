@@ -1,4 +1,5 @@
 import { Alert } from '@mantine/core';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { memo, useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
@@ -36,6 +37,12 @@ const reducers: ReducersList = {
     pollPageVote: pollPageVoteReducer,
 };
 
+/**
+ * The PollPage component displays a poll and allows the user to vote in the poll.
+ * It fetches the poll data based on the shareable URL and handles the rendering of the poll card.
+ * If the user has already voted or the poll has expired, it displays the poll results.
+ */
+
 const PollPage = memo(() => {
     // Query
     const { query } = useRouter();
@@ -62,6 +69,14 @@ const PollPage = memo(() => {
     });
 
     // Callbacks
+
+    /**
+     * Callback function for rendering additional poll options.
+     * Returns the JSX elements representing the additional options to be rendered.
+     *
+     * @param poll - The poll object.
+     * @returns The JSX elements for the additional poll options.
+     */
     const renderPollOptions = useCallback(
         (poll: Poll) => (
             <>
@@ -74,6 +89,12 @@ const PollPage = memo(() => {
         []
     );
 
+    /**
+     * Callback function for rendering extra content.
+     * Returns the JSX elements representing the extra content to be rendered.
+     *
+     * @returns The JSX elements for the extra content.
+     */
     const renderExtra = useCallback(
         () => (
             <>
@@ -87,7 +108,7 @@ const PollPage = memo(() => {
         [voteError]
     );
 
-    // Memoized values
+    // Values
     const isPollExpired = useMemo(
         () => isExpired(poll?.expiresAt),
         [poll?.expiresAt]
@@ -95,6 +116,9 @@ const PollPage = memo(() => {
 
     return (
         <DynamicModuleLoader reducers={reducers}>
+            <Head>
+                <title>{poll.title}</title>
+            </Head>
             {isVoteExist || isPollExpired ? (
                 <PollCardResults item={poll} />
             ) : (

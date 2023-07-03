@@ -13,9 +13,6 @@ export default async function handler(
         case 'GET':
             httpPollController.getPoll(req, res);
             break;
-        case 'PATCH':
-            httpPollController.checkIp(req, res);
-            break;
         default:
             break;
     }

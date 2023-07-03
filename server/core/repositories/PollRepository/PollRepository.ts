@@ -11,6 +11,12 @@ export interface PollRepository {
 }
 
 export class PollRepo implements PollRepository {
+    /**
+     * Adds a new poll to the FaunaDB database.
+     *
+     * @param dto - The poll data to be added.
+     * @returns The added poll data.
+     */
     public async add(dto: AddPollDto) {
         const response = await client.query(
             query.Create(query.Collection('polls'), { data: dto })
@@ -21,6 +27,13 @@ export class PollRepo implements PollRepository {
         return response.data;
     }
 
+    /**
+     * Adds a vote to a poll in the FaunaDB database.
+     *
+     * @param url - The shareable URL of the poll.
+     * @param choices - The choices to be voted for.
+     * @returns The updated poll data after adding the vote.
+     */
     public async addVote(url: string, choices: string[]) {
         const poll = await client.query(
             query.Get(query.Match(query.Index('polls_by_shareableUrl'), url))
@@ -61,6 +74,12 @@ export class PollRepo implements PollRepository {
         return updatedPoll.data;
     }
 
+    /**
+     * Retrieves a poll from the FaunaDB database by its shareable URL.
+     *
+     * @param url - The shareable URL of the poll.
+     * @returns The poll data.
+     */
     public async getByUrl(url: string) {
         const response = await client.query(
             query.Get(query.Match(query.Index('polls_by_shareableUrl'), url))

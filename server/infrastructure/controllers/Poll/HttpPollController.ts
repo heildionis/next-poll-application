@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
+import requestIp from 'request-ip';
 
 import {
-    CheckIpRequest,
     CreatePollRequest,
     GetPollRequest,
     VoteInPollRequest,
@@ -24,6 +24,13 @@ export class HttpPollController {
         readonly voteService: VoteService
     ) {}
 
+    /**
+     * Create a new poll.
+     *
+     * @param req - The create poll request.
+     * @param res - The response object.
+     * @returns The created poll.
+     */
     async createPoll(req: CreatePollRequest, res: NextApiResponse) {
         try {
             const {
@@ -54,26 +61,18 @@ export class HttpPollController {
         }
     }
 
+    /**
+     * Get a poll by its URL.
+     *
+     * @param req - The get poll request.
+     * @param res - The response object.
+     * @returns The poll and a flag indicating if the user has already voted.
+     */
     async getPoll(req: GetPollRequest, res: NextApiResponse) {
         try {
             const { url } = req.query;
-            let ipAddress;
 
-            if (
-                req.headers['x-forwarded-for'] &&
-                typeof req.headers['x-forwarded-for'] === 'string'
-            ) {
-                const [userIpAddress] =
-                    req.headers['x-forwarded-for'].split(',');
-                ipAddress = userIpAddress;
-            } else if (req.headers['x-real-ip']) {
-                ipAddress = req.headers['x-real-ip'];
-            } else {
-                ipAddress = req.connection.remoteAddress;
-            }
-            // const ipAddress = requestIp.getClientIp(req);
-
-            console.log(ipAddress);
+            const ipAddress = requestIp.getClientIp(req);
 
             const poll = await this.pollService.getByUrl(url);
 
@@ -86,15 +85,20 @@ export class HttpPollController {
                 poll
             );
 
-            return res
-                .status(200)
-                .send({ poll: poll.data, isVoteExist, ipAddress });
+            return res.status(200).send({ poll: poll.data, isVoteExist });
         } catch (error) {
             console.log('Error fetching poll:', error);
             return errorHandler(res, error);
         }
     }
 
+    /**
+     * Vote in a poll.
+     *
+     * @param req - The vote in poll request.
+     * @param res - The response object.
+     * @returns The updated poll.
+     */
     async voteInPoll(req: VoteInPollRequest, res: NextApiResponse) {
         try {
             const { url } = req.query;
@@ -126,30 +130,6 @@ export class HttpPollController {
             return res.status(200).send(updatedPoll);
         } catch (error) {
             console.error('Error voting in poll:', error);
-            return errorHandler(res, error);
-        }
-    }
-
-    async checkIp(req: CheckIpRequest, res: NextApiResponse) {
-        try {
-            const { url } = req.query;
-            const ipAddress =
-                req.headers['x-real-ip'] || req.connection.remoteAddress;
-
-            const poll = await this.pollService.getByUrl(url);
-
-            if (!poll) {
-                throw ApiError.notFound('Poll not found.');
-            }
-
-            const isVoteExist = await this.voteService.isVoteExist(
-                ipAddress as string,
-                poll
-            );
-
-            return res.status(200).send(isVoteExist);
-        } catch (error) {
-            console.error('Error checking Ip:', error);
             return errorHandler(res, error);
         }
     }

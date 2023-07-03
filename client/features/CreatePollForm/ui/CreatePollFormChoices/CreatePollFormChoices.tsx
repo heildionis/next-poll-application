@@ -6,6 +6,10 @@ import { useCreatePollFormActions } from '../../model/slice/createPollFormSlice'
 
 import cls from './CreatePollFormChoices.module.scss';
 
+/**
+ * Renders a form control to add and remove choices for the create poll form.
+ * It also defines functions to handle adding, removing, and changing choices.
+ */
 export const CreatePollFormChoices = memo(() => {
     const choices = useCreatePollFormChoices();
     const { removeChoice, setChoice, addChoice } = useCreatePollFormActions();
@@ -14,6 +18,11 @@ export const CreatePollFormChoices = memo(() => {
         addChoice();
     }, [addChoice]);
 
+    /**
+     * Handles the click event of the remove choice button and removes the selected choice from the store.
+     * @param choiceIndex - The index of the choice in the choices array.
+     * @param choice - The value of the choice to be removed.
+     */
     const onRemoveChoiceClick = useCallback(
         (choiceIndex: number, choice: string) => () => {
             removeChoice([choiceIndex, choice]);
@@ -21,6 +30,10 @@ export const CreatePollFormChoices = memo(() => {
         [removeChoice]
     );
 
+    /**
+     * Handles the change event of the choice input and updates the selected choice in the store.
+     * @param choiceIndex - The index of the choice in the choices array.
+     */
     const onChangeChoice = useCallback(
         (choiceIndex: number) => (e: ChangeEvent<HTMLInputElement>) => {
             setChoice([choiceIndex, e.target.value]);

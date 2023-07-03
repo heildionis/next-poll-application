@@ -26,7 +26,7 @@ export const createReduxStore = (
 
     const store = configureStore({
         reducer: reducerManager.reduce as Reducer<CombinedState<StateSchema>>,
-        devTools: true,
+        devTools: process.env.NODE_ENV === 'development',
         preloadedState: initialState,
         middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware().concat([rtkApi.middleware]),
@@ -48,6 +48,10 @@ export type AppThunk<ReturnType = void> = ThunkAction<
     Action
 >;
 
+/**
+ * Creates a wrapper for the Redux store using next-redux-wrapper.
+ * Note: The @ts-ignore comment is used here because typing the createWrapper function with precise types can be difficult due to the complexity of the Next.js and Redux integration.
+ */
 export const wrapper = createWrapper<AppStore>(
     // @ts-ignore
     createReduxStore,

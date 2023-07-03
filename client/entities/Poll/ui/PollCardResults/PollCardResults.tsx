@@ -20,9 +20,17 @@ interface PollCardResultsProps {
     renderHeading?: () => ReactNode;
 }
 
+/**
+ * Renders a card displaying the results of a poll.
+ * The component receives a Poll object as a prop and renders the poll title, choices with their respective percentages, and total votes.
+ * It also provides an optional renderHeading prop to render additional heading content.
+ */
 export const PollCardResults: FC<PollCardResultsProps> = memo((props) => {
     const { item, renderHeading } = props;
 
+    /**
+     * Styles for the Slider component.
+     */
     const styles: Styles<SliderStylesNames, Record<string, any>> = useMemo(
         () => ({
             thumb: {},
@@ -40,6 +48,9 @@ export const PollCardResults: FC<PollCardResultsProps> = memo((props) => {
         []
     );
 
+    /**
+     * Calculates the total votes and percentage ratio for each choice in the poll.
+     */
     const { totalVotes, percentageRatio } = useMemo(() => {
         const percentageRatio: Record<string, number> = {};
 

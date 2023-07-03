@@ -22,6 +22,12 @@ const reducers: ReducersList = {
     createPollForm: createPollFormReducer,
 };
 
+/**
+ * Renders the create poll form.
+ * The form includes a title, error message, form inputs for title, expiration control, and choices,
+ * and a button to create the poll.
+ * The form is wrapped in a `DynamicModuleLoader` to load the `createPollForm` reducer dynamically.
+ */
 export const CreatePollForm: FC = memo(() => {
     const isPollCreated = useCreatePollFormIsPollCreated();
     const error = useCreatePollFormError();
@@ -31,6 +37,12 @@ export const CreatePollForm: FC = memo(() => {
         dispatch(createPoll());
     }, [dispatch]);
 
+    /**
+     * Renders the form based on the `isPollCreated` and `error` values.
+     * If the poll is created, it renders the `CreatePollFormResult` component.
+     * Otherwise, it renders the form inputs for title, expiration control, and choices,
+     * along with the create poll button.
+     */
     const renderForm = useMemo(() => {
         if (isPollCreated) {
             return <CreatePollFormResult />;

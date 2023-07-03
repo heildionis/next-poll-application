@@ -26,6 +26,11 @@ interface PollCardProps {
     renderExtra?: () => ReactNode;
 }
 
+/**
+ * Renders a card displaying a poll with options to select choices and vote.
+ * The component receives a Poll object as a prop and renders the poll title, choices with checkboxes, and voting options.
+ * It also provides an optional renderExtra prop to render additional content and a renderOptions prop to render custom voting options.
+ */
 export const PollCard: FC<PollCardProps> = memo((props) => {
     const {
         item,
