@@ -1,4 +1,5 @@
 import { NextApiResponse } from 'next';
+import requestIp from 'request-ip';
 
 import {
     CreatePollRequest,
@@ -56,8 +57,10 @@ export class HttpPollController {
     async getPoll(req: GetPollRequest, res: NextApiResponse) {
         try {
             const { url } = req.query;
-            const ipAddress =
-                req.headers['x-real-ip'] || req.connection.remoteAddress;
+
+            const ipAddress = requestIp.getClientIp(req);
+
+            console.log(ipAddress);
 
             const poll = await this.pollService.getByUrl(url);
 
