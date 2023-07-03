@@ -1,5 +1,4 @@
 import { NextApiResponse } from 'next';
-import requestIp from 'request-ip';
 
 import {
     CreatePollRequest,
@@ -57,8 +56,21 @@ export class HttpPollController {
     async getPoll(req: GetPollRequest, res: NextApiResponse) {
         try {
             const { url } = req.query;
+            let ipAddress;
 
-            const ipAddress = requestIp.getClientIp(req);
+            if (
+                req.headers['x-forwarded-for'] &&
+                typeof req.headers['x-forwarded-for'] === 'string'
+            ) {
+                const [userIpAddress] =
+                    req.headers['x-forwarded-for'].split(',');
+                ipAddress = userIpAddress;
+            } else if (req.headers['x-real-ip']) {
+                ipAddress = req.headers['x-real-ip'];
+            } else {
+                ipAddress = req.connection.remoteAddress;
+            }
+            // const ipAddress = requestIp.getClientIp(req);
 
             console.log(ipAddress);
 
