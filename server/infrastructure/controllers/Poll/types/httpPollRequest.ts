@@ -14,6 +14,8 @@ export interface GetPollRequest extends NextApiRequest {
     };
 }
 
+export interface CheckIpRequest extends GetPollRequest {}
+
 export interface VoteInPollRequest extends NextApiRequest {
     query: {
         url?: string;

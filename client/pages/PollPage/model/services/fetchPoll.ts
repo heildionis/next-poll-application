@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { fetchPollFromApi } from '../../api/pollsApi';
+import { checkIpFromApi, fetchPollFromApi } from '../../api/pollsApi';
 
 import { ThunkConfig } from '#/app/providers/StoreProvider';
 import { Poll } from '#/entities/Poll';
@@ -13,6 +13,10 @@ export const fetchPoll = createAsyncThunk<
     const { dispatch, rejectWithValue } = thunkApi;
 
     try {
+        const checkIpResponse = await dispatch(checkIpFromApi(shareableUrl));
+
+        console.log(checkIpResponse);
+
         const response = await dispatch(fetchPollFromApi(shareableUrl));
 
         if ('data' in response) {

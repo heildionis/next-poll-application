@@ -1,6 +1,7 @@
 import { NextApiResponse } from 'next';
 
 import {
+    CheckIpRequest,
     CreatePollRequest,
     GetPollRequest,
     VoteInPollRequest,
@@ -125,6 +126,30 @@ export class HttpPollController {
             return res.status(200).send(updatedPoll);
         } catch (error) {
             console.error('Error voting in poll:', error);
+            return errorHandler(res, error);
+        }
+    }
+
+    async checkIp(req: CheckIpRequest, res: NextApiResponse) {
+        try {
+            const { url } = req.query;
+            const ipAddress =
+                req.headers['x-real-ip'] || req.connection.remoteAddress;
+
+            const poll = await this.pollService.getByUrl(url);
+
+            if (!poll) {
+                throw ApiError.notFound('Poll not found.');
+            }
+
+            const isVoteExist = await this.voteService.isVoteExist(
+                ipAddress as string,
+                poll
+            );
+
+            return res.status(200).send(isVoteExist);
+        } catch (error) {
+            console.error('Error checking Ip:', error);
             return errorHandler(res, error);
         }
     }

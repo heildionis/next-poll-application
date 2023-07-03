@@ -26,7 +26,7 @@ export const createReduxStore = (
 
     const store = configureStore({
         reducer: reducerManager.reduce as Reducer<CombinedState<StateSchema>>,
-        devTools: true,
+        devTools: process.env.NODE_ENV === 'development',
         preloadedState: initialState,
         middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware().concat([rtkApi.middleware]),

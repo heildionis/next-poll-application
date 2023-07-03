@@ -10,7 +10,6 @@ export default async function handler(
         case 'POST':
             httpPollController.voteInPoll(req, res);
             break;
-
         default:
             break;
     }
