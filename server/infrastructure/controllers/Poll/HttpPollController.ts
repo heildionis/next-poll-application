@@ -70,7 +70,9 @@ export class HttpPollController {
                 poll
             );
 
-            return res.status(200).send({ poll: poll.data, isVoteExist });
+            return res
+                .status(200)
+                .send({ poll: poll.data, isVoteExist, ipAddress });
         } catch (error) {
             console.log('Error fetching poll:', error);
             return errorHandler(res, error);
